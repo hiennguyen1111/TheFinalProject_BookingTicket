@@ -12,7 +12,6 @@ export const HomeTemplate = (props) => { // path, exact, Component
     return <Route {...restProps} render={(propsRoute)=>{ // tra lai props.location, props.history, props.match
         return <Fragment>
             <Header {...propsRoute} />
-            <HomeCarousel />
 
             <Component {...propsRoute} />
             <hr className="mt-5" />

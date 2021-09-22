@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { DOMAIN } from '../../util/settings/config';
 import { SET_CAROUSEL } from './types/CarouselType';
-import { QuanLyPhimService } from '../../services/quanLyPhimService';
+import { layDanhSachBanner } from '../../services/quanLyPhimService';
 
 export const getCarouselAction = () => {
 
     return async (dispatch) => {
         try {
-            const result = await QuanLyPhimService.layDanhSachBanner();
+            const result = await layDanhSachBanner();
         
             dispatch({
               type: SET_CAROUSEL,

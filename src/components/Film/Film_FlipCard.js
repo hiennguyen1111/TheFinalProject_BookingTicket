@@ -1,13 +1,15 @@
 import React from "react";
 import "./Film_FlipCard.css";
 import { PlayCircleOutlined } from '@ant-design/icons';
+import {NavLink} from 'react-router-dom'
+import { history } from "../../App";
 
 
 export default function Film_FlipCard(props) {
   const { item } = props;
 
   return (
-    <div className="flip-card mt-2">
+    <div className="flip-card mt-6">
       <div className="flip-card-inner">
         <div className="flip-card-front">
           <img
@@ -46,7 +48,9 @@ export default function Film_FlipCard(props) {
           </div>
         </div>
       </div>
-      <div className="bg-orange-300 text-center cursor-pointer py-2 bg-indigo-300 my-2 text-success-50 font-bold">
+      <div onClick={()=>{
+        history.push(`/detail/${item.maPhim}`)
+      }} className="block bg-orange-300 text-center cursor-pointer py-3 bg-indigo-300 my-2 text-success-50 font-bold">
         ĐẶT VÉ
       </div>
     </div>

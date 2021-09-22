@@ -19,4 +19,5 @@ export class QuanLyPhimService extends baseService {
 
 }
 
-export const qlPhimService = new QuanLyPhimService();
+const qlPhimService = new QuanLyPhimService();
+export const {layDanhSachBanner,layDanhSachPhim} = qlPhimService;

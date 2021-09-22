@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import axios from "axios";
 import { getCarouselAction } from "../../../../redux/actions/CarouselActions";
 import './HomeCarousel.css';
+import axios from "axios";
 
 
 const contentStyle = {
@@ -20,18 +21,17 @@ export default function HomeCarousel(props) {
   const { arrImg } = useSelector((state) => state.CarouselReducer);
 
   const dispatch = useDispatch();
-
+  
   // useEffect se tu kich hoat khi component load ra
   useEffect( () => {
-    const action = getCarouselAction;
-
+    const action = getCarouselAction();
     dispatch(action);
 
 
   }, [])
 
   const renderImg = () => {
-    return arrImg.map((item, index) => {
+    return arrImg?.map((item, index) => {
       return (
         <div key={index}>
           <div

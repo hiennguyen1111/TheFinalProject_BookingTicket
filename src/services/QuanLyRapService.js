@@ -1,7 +1,6 @@
 import { baseService } from "./baseService";
 import { GROUPID } from "../util/settings/config";
 
-
 export class QuanLyRapService extends baseService {
 
     constructor() {
@@ -13,6 +12,11 @@ export class QuanLyRapService extends baseService {
 
     }
 
+    layThongTinLichChieuPhim = (maPhim) => {
+        return this.get(`/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`);
+    }
+
 }
 
-export const qlRapService = new QuanLyRapService();
+const qlRapService = new QuanLyRapService();
+export const {layDanhSachHeThongRap,layThongTinLichChieuPhim} = qlRapService;
