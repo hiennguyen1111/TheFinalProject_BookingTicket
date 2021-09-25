@@ -1,27 +1,25 @@
 import React from "react";
 import { useFormik } from "formik";
 import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { dangNhapAction } from "../../redux/actions/QuanLyNguoiDungActions";
 
-
 export default function Login(props) {
-
   const dispatch = useDispatch();
 
-  const {userLogin} = useSelector(state=>state.QuanLyNguoiDungReducer);
-  console.log('userLogin',userLogin);
+  const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
+  console.log("userLogin", userLogin);
 
   const formik = useFormik({
     initialValues: {
       taiKhoan: "",
-      lastNmatKhauame: "",
+      matKhau: "",
     },
     onSubmit: (values) => {
       const action = dangNhapAction(values);
       dispatch(action);
 
-      console.log('values',values);
+      //console.log('values',values);
     },
   });
 
@@ -115,6 +113,7 @@ export default function Login(props) {
             </div>
             <div className="mt-10">
               <button
+                type="submit"
                 className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                           font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
                           shadow-lg"
@@ -129,7 +128,7 @@ export default function Login(props) {
               to="/register"
               className="cursor-pointer text-indigo-600 hover:text-indigo-800"
             >
-              Đăng nhập
+              Đăng ký
             </NavLink>
           </div>
         </div>
