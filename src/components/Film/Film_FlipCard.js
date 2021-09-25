@@ -1,7 +1,6 @@
 import React from "react";
 import "./Film_FlipCard.css";
 import { PlayCircleOutlined } from '@ant-design/icons';
-import {NavLink} from 'react-router-dom'
 import { history } from "../../App";
 
 

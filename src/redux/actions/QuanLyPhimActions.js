@@ -1,4 +1,3 @@
-import { QuanLyPhimService } from "../../services/quanLyPhimService";
 import { SET_DANH_SACH_PHIM } from "./types/QuanLyPhimType";
 import { layDanhSachPhim } from "../../services/quanLyPhimService";
 

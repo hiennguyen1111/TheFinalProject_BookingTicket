@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import styleSlick from "./MultipleRowSlick.module.css";
-import Film from "../Film/Film";
 import Film_FlipCard from "../Film/Film_FlipCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -52,7 +51,7 @@ const MultipleRowsSlick = (props) => {
   let activeClassSC = sapChieu === true ? "active_Film" : "non_active_Film";
 
   const settings = {
-    className: "center variable-width",
+    className: "center",
     centerMode: true,
     infinite: true,
     centerPadding: "60px",
@@ -60,7 +59,7 @@ const MultipleRowsSlick = (props) => {
     speed: 500,
     rows: 1,
     slidesPerRow: 2,
-    variableWidth: true,
+    // variableWidth: true,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };

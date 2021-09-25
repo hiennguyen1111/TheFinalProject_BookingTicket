@@ -1,13 +1,20 @@
 import "./App.css";
-import { Router } from "react-router";
+import { Suspense, lazy } from 'react';
+import { Router, Switch, Route } from "react-router";
 import { createBrowserHistory } from "history";
 import { HomeTemplate } from "./templates/HomeTemplate/HomeTemplate";
+import CheckoutTemplate from "./templates/CheckoutTemplate/CheckoutTemplate";
+import {UserTemplate} from "./templates/UserTemplate/UserTemplate";
 import Home from "./pages/Home/Home";
 import Contact from "./pages/Contact/Contact";
 import News from "./pages/News/News";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Detail from "./pages/Detail/Detail";
+import Checkout from "./pages/Checkout/Checkout";
+
+
+const CheckoutTemplateLazy = lazy(()=> import ('./templates/CheckoutTemplate/CheckoutTemplate'))
 
 export const history = createBrowserHistory();
 
@@ -60,15 +67,22 @@ function App() {
     //  </div>
 
     <Router history={history}>
-      <switch>
+      <Switch>
         <HomeTemplate path="/home" exact Component={Home} />
         <HomeTemplate path="/contact" exact Component={Contact} />
         <HomeTemplate path="/news" exact Component={News} />
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
-        <HomeTemplate path="/login" exact Component={Login} />
-        <HomeTemplate path="/register" exact Component={Register} />
+        {/* <Route path="/login" exact Component={Login} /> */}
+        <Route path="/register" exact Component={Register} />
+        <CheckoutTemplate path="/checkout/:id" exact Component={Checkout} />
+        {/* <Suspense fallback={<h1>LOADING...</h1>}>
+          <CheckoutTemplateLazy path="/checkout/:id" exact Component={Checkout} />
+        </Suspense> */}
+        <UserTemplate path="/login" exact Component={Login} />
+
+
         <HomeTemplate path="/" exact Component={Home} />
-      </switch>
+      </Switch>
     </Router>
   );
 }
