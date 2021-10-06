@@ -8,7 +8,6 @@ import { layThongTinChiTietPhim } from "../../redux/actions/QuanLyRapActions";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
 
-
 const { TabPane } = Tabs;
 
 export default function Detail(props) {
@@ -114,29 +113,52 @@ export default function Detail(props) {
                         }
                         key={index}
                       >
-                        {htr.cumRapChieu?.map((cumRap,index)=>{
-                          return <div className="mt-5" key={index}>
-                            <div className="flex flex-row">
-                              <img stle={{width:60,height:60}} src="https://picsum.photos/60/60" />
-                              <div className="ml-2">
-                                <p style={{fontSize:20, fontWeight:'bold',lineHeight:1}}>{cumRap.tenCumRap}</p>
-                                <p className="text-gray-400" style={{marginTop:0}}>{cumRap.diaChi}</p>
+                        {htr.cumRapChieu?.map((cumRap, index) => {
+                          return (
+                            <div className="mt-5" key={index}>
+                              <div className="flex flex-row">
+                                <img
+                                  stle={{ width: 60, height: 60 }}
+                                  src="https://picsum.photos/60/60"
+                                />
+                                <div className="ml-2">
+                                  <p
+                                    style={{
+                                      fontSize: 20,
+                                      fontWeight: "bold",
+                                      lineHeight: 1,
+                                    }}
+                                  >
+                                    {cumRap.tenCumRap}
+                                  </p>
+                                  <p
+                                    className="text-gray-400"
+                                    style={{ marginTop: 0 }}
+                                  >
+                                    {cumRap.diaChi}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-4 thong-tin-lich-chieu">
+                                {cumRap.lichChieuPhim
+                                  ?.slice(0, 12)
+                                  .map((lichChieu, index) => {
+                                    return (
+                                      <NavLink
+                                        to={`/checkout/${lichChieu.maLichChieu}`}
+                                        key={index}
+                                        className="col-span-1 text-blue-400 font-bold"
+                                      >
+                                        {moment(
+                                          lichChieu.ngayChieuGioChieu
+                                        ).format("hh:mm A")}
+                                      </NavLink>
+                                    );
+                                  })}
                               </div>
                             </div>
-                            <div className="grid grid-cols-4 thong-tin-lich-chieu">
-                              {cumRap.lichChieuPhim?.slice(0,12).map((lichChieu,index)=>{
-                                return <NavLink to="/" key={index} className="col-span-1 text-blue-400 font-bold">
-                                  {moment(lichChieu.ngayChieuGioChieu).format('hh:mm A')}
-                                </NavLink>
-                              })}
-                            </div>
-                          </div>
+                          );
                         })}
-                        
-                        
-
-
-
                       </TabPane>
                     );
                   })}

@@ -1,0 +1,42 @@
+.ghe { /* ghế thường */
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px;
+    background-color: rgb(123,122,122);
+    color: #fff;
+  }
+  
+  .gheDaDat {
+    background-color: rgb(241, 123, 168);
+    color: white;
+    cursor: no-drop;
+  }
+  
+  .gheDangDat {
+    background-color: #bfdfb6 !important; 
+    color: rgb(15, 15, 14);
+    
+  }
+  
+  .gheVip {
+    background-color: rgb(246,246,246);
+    color: rgb(236, 102, 192);
+    border: 1px solid rgb(236, 102, 192);;
+    box-shadow: -1px 2px 18px 6px;
+    -webkit-box-shadow: -1px 2px 18px 6px;
+    
+    
+  }
+
+  .gheDaDuocDat { /* ghe nay do minh dat */
+    background-color: rgb(214, 32, 102);
+    color: rgb(246,246,246);
+  }
+
+  .gheKhachDat {
+    background-color: rgb(62, 62, 192);
+    cursor: no-drop;
+  }
