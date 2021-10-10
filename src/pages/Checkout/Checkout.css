@@ -5,38 +5,37 @@
     border-radius: 5px;
     cursor: pointer;
     margin: 15px;
-    background-color: rgb(123,122,122);
-    color: #fff;
+    background-color: #f0f0f0;
+    color: #000;
   }
-  
-  .gheDaDat {
-    background-color: rgb(241, 123, 168);
-    color: white;
+
+.gheDangDat {
+    background-color: #b7eb8f !important; 
+    color: #000;
+    
+  }
+
+.gheVip {
+    background-color: #87e8de;
+    color: #000;
+  }
+
+.gheDaDat {
+    background-color: #91d5ff;
+    color: #000;
     cursor: no-drop;
   }
   
-  .gheDangDat {
-    background-color: #bfdfb6 !important; 
-    color: rgb(15, 15, 14);
-    
-  }
-  
-  .gheVip {
-    background-color: rgb(246,246,246);
-    color: rgb(236, 102, 192);
-    border: 1px solid rgb(236, 102, 192);;
+.gheDaDuocDat { /* ghe nay do minh dat */
+    background-color: #d3adf7;
+    color: #000;
+    /* border: 1px solid rgba(#9254de);
     box-shadow: -1px 2px 18px 6px;
-    -webkit-box-shadow: -1px 2px 18px 6px;
-    
-    
+    -webkit-box-shadow: -1px 2px 18px 6px; */
   }
 
-  .gheDaDuocDat { /* ghe nay do minh dat */
-    background-color: rgb(214, 32, 102);
-    color: rgb(246,246,246);
-  }
-
-  .gheKhachDat {
-    background-color: rgb(62, 62, 192);
+.gheKhachDat {
+    background-color: #ffadd2;
+    color: #000;
     cursor: no-drop;
   }

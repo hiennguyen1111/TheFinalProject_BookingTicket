@@ -68,7 +68,7 @@ export default class HomeMenu extends React.PureComponent {
                                     return (
                                       <NavLink
                                         className="text-xl text-blue-600"
-                                        to="/"
+                                        to={`/checkout/${lichChieu.maLichChieu}`}
                                         key={index}
                                       >
                                         {moment(
