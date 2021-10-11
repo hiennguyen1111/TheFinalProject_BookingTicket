@@ -83,12 +83,17 @@ export default function AdminTemplate(props) {
           <Fragment>
             <Layout style={{ minHeight: "100vh" }}>
               <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className="logo p-5">
+                <NavLink
+                  to="/"
+                  aria-label="Back to homepage"
+                  className="logo p-5"
+                >
                   <img
                     src="https://cyberlearn.vn/wp-content/uploads/2020/03/cyberlearn-min-new-opt2.png"
                     alt="cybersoftlogo"
                   />
-                </div>
+                </NavLink>
+
                 <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
                   <Menu.Item key="1" icon={<UserOutlined />}>
                     <NavLink to="/admin/users">Users</NavLink>

@@ -8,9 +8,12 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
-import { layDanhSachPhimAction } from "../../../redux/actions/QuanLyPhimActions";
-import { Fragment} from "react";
-import { NavLink } from 'react-router-dom'
+import {
+  layDanhSachPhimAction,
+  xoaPhimAction,
+} from "../../../redux/actions/QuanLyPhimActions";
+import { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 import { history } from "../../../App";
 
 const { Search } = Input;
@@ -73,7 +76,9 @@ export default function Films(props) {
       render: (text, film) => {
         return (
           <Fragment>
-            {film.moTa.length > 50 ? film.moTa.substr(0, 50) + " ..." : film.moTa}
+            {film.moTa.length > 50
+              ? film.moTa.substr(0, 50) + " ..."
+              : film.moTa}
           </Fragment>
         );
       },
@@ -82,18 +87,33 @@ export default function Films(props) {
     },
     {
       title: "Hành động",
-      dataIndex: "hanhDong",
+      dataIndex: "maPhim",
       render: (text, film) => {
         return (
           <Fragment>
-            <NavLink className="mr-2 text-blue-500 text-4xl" to="/">
-              {" "}
-              <EditOutlined />{" "}
+            <NavLink
+              key={1}
+              className="mr-2"
+              to={`/admin/films/edit/${film.maPhim}`}
+            >
+              <EditOutlined style={{ color: "#1890ff", fontSize: "30px", fontWeight:'bold' }} />{" "}
             </NavLink>
-            <NavLink className="text-4xl text-red-500" to="/">
-              {" "}
-              <DeleteOutlined />{" "}
-            </NavLink>
+            <span
+              style={{ cursor: "pointer" }}
+              key={2}
+              onClick={() => {
+                // Gọi action xoá
+                if (
+                  window.confirm(
+                    "Bạn có chắc muốn xoá phim " + film.tenPhim + " không?"
+                  )
+                ) {
+                  dispatch(xoaPhimAction(film.maPhim));
+                }
+              }}
+            >
+              <DeleteOutlined style={{ color: "#eb2f96", fontSize: "30px", fontWeight:'bold' }} />{" "}
+            </span>
           </Fragment>
         );
       },
@@ -113,9 +133,14 @@ export default function Films(props) {
   return (
     <div className="container">
       <h3 className="text-3xl">Quản lý phim</h3>
-      <Button className="mb-5" onClick={()=>{
-        history.push('/admin/films/addnew');
-      }}>Thêm phim</Button>
+      <Button
+        className="mb-5"
+        onClick={() => {
+          history.push("/admin/films/addnew");
+        }}
+      >
+        Thêm phim
+      </Button>
       <Search
         className="mb-5"
         placeholder="Nhập tên phim bạn muốn tìm kiếm"
@@ -123,8 +148,12 @@ export default function Films(props) {
         size="large"
         onSearch={onSearch}
       />
-      <Table columns={columns} dataSource={data} onChange={onChange} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+        rowKey={"maPhim"}
+      />
     </div>
   );
 }
-

@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 // import axios from "axios";
 import { getCarouselAction } from "../../../../redux/actions/CarouselActions";
 import './HomeCarousel.css';
-import axios from "axios";
 
 
 const contentStyle = {

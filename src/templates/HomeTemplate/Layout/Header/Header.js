@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { history } from "../../../../App";
@@ -88,28 +88,28 @@ export default function Header(props) {
           <li className="flex">
             <NavLink
               to="/home"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-violet-600 border-violet-600 text-white"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent border-violet-600 text-white text-xl"
               activeClassname="border-b-2 border-white"
             >
-              Home
+              {t("Home")}
             </NavLink>
           </li>
           <li className="flex">
             <NavLink
               to="/contact"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-xl"
               activeClassname="border-b-2 border-white"
             >
-              Contact
+              {t("Contact")}
             </NavLink>
           </li>
           <li className="flex">
             <NavLink
               to="/news"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-xl"
               activeClassname="border-b-2 border-white"
             >
-              News
+              {t("News")}
             </NavLink>
           </li>
         </ul>

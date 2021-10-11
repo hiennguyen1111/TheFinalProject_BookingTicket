@@ -1,50 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Radio, DatePicker, InputNumber, Switch } from "antd";
 import { useFormik } from "formik";
 import moment from "moment";
-import { useDispatch } from 'react-redux'
-import { themPhimUploadHinhAction } from "../../../../redux/actions/QuanLyPhimActions";
-import { GROUPID } from "../../../../util/settings/config";
+import { useDispatch, useSelector } from "react-redux";
+import { layThongTinPhimAction, capNhatPhimUploadAction } from "../../../../redux/actions/QuanLyPhimActions";
 
-
-const AddNew = () => {
+const Edit = (props) => {
   const [componentSize, setComponentSize] = useState("default");
+  const { thongTinPhim } = useSelector((state) => state.QuanLyPhimReducer);
   const [imgSrc, setImgSrc] = useState("");
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    let { id } = props.match.params;
+    dispatch(layThongTinPhimAction(id));
+  }, []);
+
   const formik = useFormik({
+    enableReinitialize:true, // thuộc tính này áp dụng độc nhất trang edit, không áp dụng vs các state khác
     initialValues: {
-      tenPhim: "",
-      trailer: "",
-      moTa: "",
-      ngayKhoiChieu: "",
-      dangChieu: false,
-      sapChieu: false,
-      hot: false,
-      danhGia: 0,
-      hinhAnh: {},
+      maPhim: thongTinPhim.maPhim,
+      tenPhim: thongTinPhim?.tenPhim,
+      trailer: thongTinPhim.trailer,
+      moTa: thongTinPhim.moTa,
+      ngayKhoiChieu: thongTinPhim.ngayKhoiChieu,
+      dangChieu: thongTinPhim.danhGia,
+      sapChieu: thongTinPhim.sapChieu,
+      hot: thongTinPhim.hot,
+      danhGia: thongTinPhim.danhGia,
+      hinhAnh: null,
+      maNhom:'GP10',
     },
     onSubmit: (values) => {
       console.log("values", values);
-      values.maNhom = GROUPID;
       // Tạo đối tượng formdata => Đưa giá trị values từ formik vào formdata
       let formData = new FormData();
-      for (let key in values) {    
-        if(key !=='hinhAnh'){
+      for (let key in values) {
+        if (key !== "hinhAnh"){
           formData.append(key, values[key]);
         } else {
-          formData.append('File',values.hinhAnh, values.hinhAnh.name);
+          if (values.hinhAnh !== null) {
+            formData.append("File", values.hinhAnh, values.hinhAnh.name);
+          }
         }
       }
-      // Gọi API gửi các giá trị formdata về backend xử lý
-      dispatch(themPhimUploadHinhAction(formData));
-      
-    },
-    
+      // Cập nhật phim upload hình
+      dispatch(capNhatPhimUploadAction(formData));
+    }
   });
 
   const handleChangeDatePicker = (value) => {
-    let ngayKhoiChieu = moment(value).format("DD/MM/YYYY");
+    let ngayKhoiChieu = moment(value);
     formik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu);
   };
 
@@ -60,7 +66,7 @@ const AddNew = () => {
     };
   };
 
-  const handleChangeFile = (e) => {
+  const handleChangeFile = async (e) => {
     // Lấy file ra từ event
     let file = e.target.files[0];
     if (
@@ -69,6 +75,8 @@ const AddNew = () => {
       file.type === "image/gif" ||
       file.type === "image/png"
     ) {
+      // Đem dữ liệu file lưu vào formik
+      await formik.setFieldValue("hinhAnh", file);
       // Tạo đối tượng để đọc file
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -76,8 +84,7 @@ const AddNew = () => {
         setImgSrc(e.target.result);
       }; // Hình base 64
     }
-    // Đem dữ liệu file lưu vào formik
-    formik.setFieldValue("hinhAnh", file);
+    
   };
 
   const onFormLayoutChange = ({ size }) => {
@@ -112,31 +119,32 @@ const AddNew = () => {
         </Form.Item>
 
         <Form.Item label="Tên phim">
-          <Input name="tenPhim" onChange={formik.handleChange} />
+          <Input name="tenPhim" onChange={formik.handleChange} value={formik.values.tenPhim} />
         </Form.Item>
         <Form.Item label="Trailer">
-          <Input name="trailer" onChange={formik.handleChange} />
+          <Input name="trailer" onChange={formik.handleChange} value={formik.values.trailer} />
         </Form.Item>
         <Form.Item label="Mô tả">
-          <Input name="moTa" onChange={formik.handleChange} />
+          <Input name="moTa" onChange={formik.handleChange} value={formik.values.moTa} />
         </Form.Item>
         <Form.Item label="Ngày khởi chiếu">
-          <DatePicker format={"DD/MM/YYYY"} onChange={handleChangeDatePicker} />
+          <DatePicker format={"DD/MM/YYYY"} onChange={handleChangeDatePicker} value={moment(formik.values.ngayKhoiChieu)} />
         </Form.Item>
         <Form.Item label="Đang chiếu">
-          <Switch onChange={handleChangeSwitch("dangChieu")} />
+          <Switch onChange={handleChangeSwitch("dangChieu")} checked={formik.values.dangChieu} />
         </Form.Item>
         <Form.Item label="Sắp chiếu">
-          <Switch onChange={handleChangeSwitch("sapChieu")} />
+          <Switch onChange={handleChangeSwitch("sapChieu")} checked={formik.values.sapChieu} />
         </Form.Item>
         <Form.Item label="Hot">
-          <Switch onChange={handleChangeSwitch("hot")} />
+          <Switch onChange={handleChangeSwitch("hot")} checked={formik.values.hot} />
         </Form.Item>
         <Form.Item label="Đánh giá">
           <InputNumber
             onChange={handleChangeInputNumber("danhGia")}
             min={1}
             max={10}
+            value={formik.values.danhGia}
           />
         </Form.Item>
         <Form.Item label="Hình ảnh">
@@ -146,11 +154,11 @@ const AddNew = () => {
             accept="image/png, image/jpeg, image/gif, image/png"
           />
           <br />
-          <img src={imgSrc} style={{ width: 100, height: 100 }} alt="..." />
+          <img src={imgSrc === '' ? thongTinPhim.hinhAnh : imgSrc} style={{ width: 100, height: 100 }} alt="..." />
         </Form.Item>
         <Form.Item label="Tác vụ">
           <button type="submit" className="text-white bg-blue-400 p-2">
-            Thêm phim
+            Lưu thay đổi
           </button>
         </Form.Item>
       </Form>
@@ -158,4 +166,4 @@ const AddNew = () => {
   );
 };
 
-export default AddNew;
+export default Edit;
