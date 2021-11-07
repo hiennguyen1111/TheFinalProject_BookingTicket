@@ -6,6 +6,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
+      iphone: '375px',
+      iphonePlus: '414px',
       sm: '640px',
       md: '768px',
       lg: '1024px',
@@ -437,6 +439,9 @@ module.exports = {
       '5/6': '83.333333%',
       full: '100%',
       screen: '100vh',
+      700: "700px",
+      400: "400px",
+      250: "250px",
     }),
     inset: (theme, { negative }) => ({
       auto: 'auto',

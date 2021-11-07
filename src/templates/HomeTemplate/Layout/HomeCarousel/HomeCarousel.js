@@ -7,12 +7,11 @@ import './HomeCarousel.css';
 
 
 const contentStyle = {
-  height: "600px",
   color: "#fff",
   lineHeight: "160px",
   textAlign: "center",
   backgroundPosition: "center",
-  backgroundSize: "cover",
+  backgroundSize: "100%",
   backgroundRepeat: "no-repeat",
 };
 
@@ -25,8 +24,6 @@ export default function HomeCarousel(props) {
   useEffect( () => {
     const action = getCarouselAction();
     dispatch(action);
-
-
   }, [])
 
   const renderImg = () => {
@@ -34,7 +31,8 @@ export default function HomeCarousel(props) {
       return (
         <div key={index}>
           <div
-            style={{ ...contentStyle, backgroundImage: `url(${item.hinhAnh})` }}
+            className="h-auto iphone:mt-12 iphone:h-250 iphonePlus:h-250 iphonePlus:mt-14 md:h-400 md:mt-16 lg:h-700 lg:mt-24"
+            style={{ ...contentStyle, backgroundImage: `url(${item.hinhAnh})`,}}
           >
             <img
               src={item.hinhAnh}

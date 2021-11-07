@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   SET_FILM_DANG_CHIEU,
   SET_FILM_SAP_CHIEU,
-} from "../../redux/actions/types/QuanLyPhimType";
+} from "../../redux/types/QuanLyPhimType";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
 
   return (
     <div
-      className={`${className} ${styleSlick["slick-prev"]}`}
+      className={`${className} ${styleSlick["slick-next"]}`}
       style={{ ...style, display: "block" }}
       onClick={onClick}
     ></div>
@@ -25,7 +25,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={`${className} ${styleSlick["slick-prev"]}`}
-      style={{ ...style, display: "block", left: "-50px" }}
+      style={{ ...style, display: "block" }}
       onClick={onClick}
     ></div>
   );
@@ -47,8 +47,14 @@ const MultipleRowsSlick = (props) => {
     });
   };
 
-  let activeClassDC = dangChieu === true ? "active_Film" : "non_active_Film";
-  let activeClassSC = sapChieu === true ? "active_Film" : "non_active_Film";
+  let activeClassDC =
+    dangChieu === true
+      ? `${styleSlick["active_Film"]}`
+      : `${styleSlick["non_active_Film"]}`;
+  let activeClassSC =
+    sapChieu === true
+      ? `${styleSlick["active_Film"]}`
+      : `${styleSlick["non_active_Film"]}`;
 
   const settings = {
     className: "center",
@@ -59,31 +65,63 @@ const MultipleRowsSlick = (props) => {
     speed: 500,
     rows: 1,
     slidesPerRow: 2,
+    initialSlide: 2,
     // variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 3,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
   return (
-    <div>
-      <button
-        className={`${styleSlick[activeClassDC]} px-8 py-3 font-semibold rounded bg-gray-800 text-white mr-2`}
-        onClick={() => {
-          const action = { type: SET_FILM_DANG_CHIEU };
-          dispatch(action);
-        }}
-      >
-        PHIM ĐANG CHIẾU
-      </button>
-      <button
-        className={`${styleSlick[activeClassSC]} px-8 py-3 font-semibold rounded bg-white text-gray-800 border`}
-        onClick={() => {
-          const action = { type: SET_FILM_SAP_CHIEU };
-          dispatch(action);
-        }}
-      >
-        PHIM SẮP CHIẾU
-      </button>
-      <Slider {...settings}>{renderFilms()}</Slider>
+    <div className="container">
+      <div className="flex">
+        <button
+          style={{ backgroundColor: "#002766" }}
+          className={`${activeClassSC} font-semibold rounded text-white mr-2 after:text-pink-500 iphone:px-2 iphone:py-2 iphone:text-sm md:px-8 md:text-base`}
+          onClick={() => {
+            const action = { type: SET_FILM_SAP_CHIEU };
+            dispatch(action);
+          }}
+        >
+          PHIM SẮP CHIẾU
+        </button>
+
+        <button
+          style={{ backgroundColor: "#002766" }}
+          className={`${activeClassDC} font-semibold rounded text-white after:text-pink-500 iphone:px-2 iphone:py-2 iphone:text-sm md:px-8 md:text-base`}
+          onClick={() => {
+            const action = { type: SET_FILM_DANG_CHIEU };
+            dispatch(action);
+          }}
+        >
+          PHIM ĐANG CHIẾU
+        </button>
+      </div>
+      <Slider {...settings} className={`${styleSlick["heightSlider"]}`}>
+        {renderFilms()}
+      </Slider>
     </div>
   );
 };

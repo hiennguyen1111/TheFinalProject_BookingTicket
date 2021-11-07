@@ -5,36 +5,36 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/configStore";
-import 'antd/dist/antd.css';
-import "slick-carousel/slick/slick.css"; 
+import "antd/dist/antd.css";
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { DOMAIN } from "./util/settings/config";
 
 // Cau hinh realtime (websocket voi signalR)
-import * as signalR from '@aspnet/signalr';
+import * as signalR from "@aspnet/signalr";
 // Import Multilingualism
-import './i18n';
+import "./i18n";
 
 // Doan code de ket noi den server, lang nghe su kien tu server
-export const connection = new signalR.HubConnectionBuilder().withUrl(`${DOMAIN}/DatVeHub`).configureLogging(signalR.LogLevel.Information).build();
+export const connection = new signalR.HubConnectionBuilder()
+  .withUrl(`${DOMAIN}/DatVeHub`)
+  .configureLogging(signalR.LogLevel.Information)
+  .build();
 
+connection
+  .start()
+  .then(() => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
 
-
-
-connection.start().then(()=>{
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-  
-    document.getElementById("root")
-  );
-}).catch(errors => {
-console.log(errors);
-})
-
-
-
+      document.getElementById("root")
+    );
+  })
+  .catch((errors) => {
+    console.log(errors);
+  });
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

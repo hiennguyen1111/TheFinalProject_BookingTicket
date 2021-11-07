@@ -40,72 +40,88 @@ export default function Detail(props) {
         blur={20} // default blur value is 10px
         borderRadius={0} // default border radius value is 10px
       >
-        <div className="grid grid-cols-12">
-          <div className="col-span-6 col-start-3">
+        <div className="grid xl:grid-cols-12 md:grid-cols-12">
+          <div className="xl:col-span-6 xl:col-start-3 md:col-span-6 md:col-start-3">
             <div className="grid grid-cols-3">
               <img
-                className="col-span-1"
+                className="col-span-1 w-60 xl:h-60 md:h-52"
                 src={filmDetail.hinhAnh}
-                style={{ width: "250px", height: "250px" }}
-                alt="123"
+                alt="{filmDetail.hinhAnh}"
               />
               <div className="col-span-2 ml-5">
-                <p className="text-sm">
-                  Ngày khởi chiếu:{" "}
-                  {moment(filmDetail.ngayKhoiChieu).format("DD.MM.YYYY")}
+                <p className="xl:text-sm md:text-sm">
+                  <span>
+                    Ngày khởi chiếu:{" "}
+                  </span>
+                  <span>
+                    {moment(filmDetail.ngayKhoiChieu).format("DD.MM.YYYY")}
+                  </span>
                 </p>
-                <p className="text-2xl leading-3">{filmDetail.tenPhim}</p>
-                <p>{filmDetail.moTa}</p>
+                <p className="iphone:text-lg iphonePlus:text-xl md:text-2xl font-bold">
+                  {filmDetail.tenPhim}
+                </p>
+                <p>
+                  {filmDetail.moTa?.length > 150
+                    ? filmDetail.moTa.substr(0, 150) + "..."
+                    : filmDetail.moTa}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="col-span-4">
-            <h1
-              style={{
-                marginLeft: "15%",
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize: 20,
-              }}
+          <div className={window.innerWidth < 768 ? "hidden" : "col-span-4 md:col-start-9 flex flex-col justify-center" }>
+            <div>
+              <h1 className="iphone:ml-8 iphonePlus:ml-8 md:ml-10 xl:ml-14 text-white bold xl:text-2xl md:text-2xl">
+                Đánh giá
+              </h1>
+            </div>
+            <div>
+              <h1 className="xl:ml-10 md:ml-7 text-blue-400 xl:text-2xl md:text-lg">
+                <Rate
+                  allowHaft
+                  value={filmDetail.danhGia / 2}
+                  style={{ color: "#69c0ff" }}
+                />
+              </h1>
+            </div>
+            <div
+              className={`c100 xl:pl-10 md:pl-7 p${
+                filmDetail.danhGia * 10
+              } iphone:small md:medium xl:big`}
             >
-              Đánh giá
-            </h1>
-            <h1 style={{ marginLeft: "5%" }} className="text-blue-400 text-2xl">
-              <Rate
-                allowHaft
-                value={filmDetail.danhGia / 2}
-                style={{ color: "rgb(81, 152, 233)", fontSize: 30 }}
-              />
-            </h1>
-
-            <div className={`c100 p${filmDetail.danhGia * 10} big`}>
-              <span className="text-white">{filmDetail.danhGia * 10}%</span>
+              <span className="xl:ml-10 md:ml-7 text-white">
+                {filmDetail.danhGia * 10}%
+              </span>
               <div className="slice">
                 <div className="bar"></div>
                 <div className="fill"></div>
               </div>
             </div>
+
             <br />
           </div>
         </div>
 
-        <div className="mt-10 ml-72 w-2/3 bg-white p-5">
-          <Tabs defaultActiveKey="1" centered>
+        <div className="mt-10 xl:w-2/3 md:w-2/3 bg-white xl:container md:container xl:ml-44 md:ml-32">
+          <Tabs className="flex flex-col" defaultActiveKey="1" centered>
             <TabPane tab="Lịch chiếu" key="1" style={{ minHeight: 300 }}>
               <div>
-                <Tabs tabPosition={"left"}>
+                <Tabs
+                  tabPosition={window.innerWidth < 768 ? "top" : "left"}
+                >
                   {filmDetail.heThongRapChieu?.map((htr, index) => {
                     return (
                       <TabPane
                         tab={
-                          <div className="flex flex-row items-center justify-center">
-                            <img
-                              src={htr.logo}
-                              className="rounded-full w-full"
-                              style={{ width: 50 }}
-                              alt="htr.logo"
-                            />
+                          <div className="m-2 flex iphone:flex-col md:flex-row items-center justify-center">
+                            <div>
+                              <img
+                                src={htr.logo}
+                                className="rounded-full iphone:block iphone:w-6 md:w-10 xl:w-16"
+                                alt="htr.logo"
+                              />
+                            </div>
+
                             <div className="text-center ml-2">
                               {htr.tenHeThongRap}
                             </div>
@@ -115,20 +131,14 @@ export default function Detail(props) {
                       >
                         {htr.cumRapChieu?.map((cumRap, index) => {
                           return (
-                            <div className="mt-5" key={index}>
+                            <div className="container mt-5" key={index}>
                               <div className="flex flex-row">
                                 <img
-                                  stle={{ width: 60, height: 60 }}
+                                  className="sm:w-6 sm:h-6 md:w-12 md:h-12 xl:h-20 xl:w-20"
                                   src="https://picsum.photos/60/60"
                                 />
                                 <div className="ml-2">
-                                  <p
-                                    style={{
-                                      fontSize: 20,
-                                      fontWeight: "bold",
-                                      lineHeight: 1,
-                                    }}
-                                  >
+                                  <p className="xl:text-lg md:text-sm font-bold">
                                     {cumRap.tenCumRap}
                                   </p>
                                   <p
@@ -139,20 +149,23 @@ export default function Detail(props) {
                                   </p>
                                 </div>
                               </div>
-                              <div className="grid grid-cols-4 thong-tin-lich-chieu">
+
+                              <div className="flex flex-row flex-wrap thong-tin-lich-chieu">
                                 {cumRap.lichChieuPhim
-                                  ?.slice(0, 12)
+                                  ?.slice(0, 8)
                                   .map((lichChieu, index) => {
                                     return (
-                                      <NavLink
-                                        to={`/checkout/${lichChieu.maLichChieu}`}
-                                        key={index}
-                                        className="col-span-1 text-blue-400 font-bold"
-                                      >
-                                        {moment(
-                                          lichChieu.ngayChieuGioChieu
-                                        ).format("hh:mm A")}
-                                      </NavLink>
+                                      <div className="mr-2">
+                                        <NavLink
+                                          to={`/checkout/${lichChieu.maLichChieu}`}
+                                          key={index}
+                                          className="col-span-1 gap-2 text-blue-400 font-bold "
+                                        >
+                                          {moment(
+                                            lichChieu.ngayChieuGioChieu
+                                          ).format("hh:mm A")}
+                                        </NavLink>
+                                      </div>
                                     );
                                   })}
                               </div>
@@ -165,11 +178,61 @@ export default function Detail(props) {
                 </Tabs>
               </div>
             </TabPane>
+
             <TabPane tab="Thông tin" key="2" style={{ minHeight: 300 }}>
-              Thông tin
+              <div className="grid grid-cols-12">
+                <div className="col-span-4 col-start-1">
+                  <img
+                    className="col-span-1 w-60 xl:h-60 md:h-52"
+                    src={filmDetail.hinhAnh}
+                    // style={{ width: "250px", height: "250px" }}
+                    alt="{filmDetail.hinhAnh}"
+                  />
+                </div>
+                <div className="col-span-8 ml-5">
+                  <p className="xl:text-xl md:text-lg font-bold">
+                    Ngày khởi chiếu:{" "}
+                    <span className="text-blue-400 font-medium">
+                      {moment(filmDetail.ngayKhoiChieu).format("DD.MM.YYYY")}
+                    </span>
+                  </p>
+                  <p className="xl:text-xl md:text-lg font-bold">
+                    Tên phim:{" "}
+                    <span className="text-blue-400 font-medium">
+                      {filmDetail.tenPhim}
+                    </span>
+                  </p>
+
+                  <p className="xl:text-xl md:text-lg font-bold">
+                    Sơ lược nội dung:{" "}
+                  </p>
+                  <p>{filmDetail.moTa}</p>
+                </div>
+              </div>
             </TabPane>
+
             <TabPane tab="Đánh giá" key="3" style={{ minHeight: 300 }}>
-              Đánh giá
+              <div className="text-center">
+                <Rate
+                  style={{ paddingTop: 0 }}
+                  allowHaft
+                  value={filmDetail.danhGia / 2}
+                  style={{ color: "#69c0ff", fontSize: 30 }}
+                />
+                <br />
+
+                <div
+                  className={`c100 p${filmDetail.danhGia * 10} medium center`}
+                >
+                  <span className="text-blue-900 text-center">
+                    {filmDetail.danhGia * 10}%
+                  </span>
+                  <div className="slice">
+                    <div className="bar"></div>
+                    <div className="fill"></div>
+                  </div>
+                </div>
+              </div>
             </TabPane>
           </Tabs>
         </div>

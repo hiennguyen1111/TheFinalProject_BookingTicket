@@ -15,10 +15,7 @@ import {
   HomeOutlined,
 } from "@ant-design/icons";
 import "./Checkout.css";
-import {
-  CHANGE_TAB_ACTIVE,
-  DAT_GHE,
-} from "../../redux/actions/types/QuanLyDatVeType";
+import { CHANGE_TAB_ACTIVE, DAT_GHE } from "../../redux/types/QuanLyDatVeType";
 import _ from "lodash";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
 import { Tabs } from "antd";
@@ -155,17 +152,67 @@ function Checkout(props) {
               ghe.stt
             )}
           </button>
+          {window.innerWidth > 1280 ? (
+            (index + 1) % 16 === 0 ? (
+              <br />
+            ) : (
+              ""
+            )
+          ) : window.innerWidth > 768 ? (
+            (index + 1) % 14 === 0 ? (
+              <br />
+            ) : (
+              ""
+            )
+          ) : window.innerWidth > 414 ? (
+            (index + 1) % 8 === 0 ? (
+              <br />
+            ) : (
+              ""
+            )
+          ) : (index + 1) % 5 === 0 ? (
+            <br />
+          ) : (
+            ""
+          )}
 
-          {(index + 1) % 16 === 0 ? <br /> : ""}
+          {/* {(index + 1) % 16 === 0 ? <br /> : ""} */}
         </Fragment>
       );
     });
   };
 
+  const seatsList = [
+    {
+      tenGhe: "Ghế chưa đặt",
+      classNameButton: "ghe gheChuaDat",
+    },
+    {
+      tenGhe: "Ghế đang đặt",
+      classNameButton: "ghe gheDangDat",
+    },
+    {
+      tenGhe: "Ghế vip",
+      classNameButton: "ghe gheVip",
+    },
+    {
+      tenGhe: "Ghế đã đặt",
+      classNameButton: "ghe gheDaDat",
+    },
+    {
+      tenGhe: "Ghế mình đặt",
+      classNameButton: "ghe gheDaDuocDat",
+    },
+    {
+      tenGhe: "Ghế khách đặt",
+      classNameButton: "ghe gheKhachDat",
+    },
+  ];
+
   return (
     <div className="min-h-screen mt-5">
-      <div className="grid grid-cols-12">
-        <div className="col-span-9">
+      <div className="flex iphone:flex-col md:flex-row">
+        <div className="iphone:w-full md:w-3/4">
           <div className="flex flex-col items-center mt-5">
             <div
               className="bg-black"
@@ -177,63 +224,28 @@ function Checkout(props) {
             <div>{renderSeats()}</div>
           </div>
 
-          <div className="mt-5 flex justify-center">
-            <table className="divide-y divide-gray-200 w-2/3">
-              <thead className="bg-gray-50 p-5">
-                <tr>
-                  <th>Ghế chưa đặt</th>
-                  <th>Ghế đang đặt</th>
-                  <th>Ghế vip</th>
-                  <th>Ghế đã đặt</th>
-                  <th>Ghế mình đặt</th>
-                  <th>Ghế khách đang đặt</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200 text-center">
-                <tr>
-                  <td>
-                    <button className="ghe text-center">
+          <div className="mt-5 flex flex-row flex-wrap gap-2 justify-center">
+            {_.map(seatsList, (item, index) => {
+              return (
+                <div className="flex flex-col justify-center text-center">
+                  <div className="font-bold px-1 text-center">{item.tenGhe}</div>
+                  <div>
+                    <button className={item.classNameButton}>
                       {" "}
                       <CheckOutlined style={{ fontWeight: "bold" }} />
                     </button>
-                  </td>
-                  <td>
-                    <button className="ghe gheDangDat text-center">
-                      <CheckOutlined style={{ fontWeight: "bold" }} />
-                    </button>
-                  </td>
-                  <td>
-                    <button className="ghe gheVip">
-                      {" "}
-                      <CheckOutlined style={{ fontWeight: "bold" }} />
-                    </button>
-                  </td>
-                  <td>
-                    <button className="ghe gheDaDat">
-                      {" "}
-                      <CheckOutlined style={{ fontWeight: "bold" }} />
-                    </button>
-                  </td>
-                  <td>
-                    <button className="ghe gheDaDuocDat">
-                      {" "}
-                      <CheckOutlined style={{ fontWeight: "bold" }} />
-                    </button>
-                  </td>
-                  <td>
-                    <button className="ghe gheKhachDat">
-                      {" "}
-                      <CheckOutlined style={{ fontWeight: "bold" }} />
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <div className="col-span-3">
-          <h3 className="text-center text-4xl" style={{backgroundColor:'#87e8de'}}>
+        <div className="iphone:w-full md:w-1/4">
+          <h3
+            className="text-center text-4xl"
+            style={{ backgroundColor: "#87e8de" }}
+          >
             {danhSachGheDangDat
               .reduce((tongTien, ghe, index) => {
                 return (tongTien += ghe.giaVe);
@@ -296,7 +308,7 @@ function Checkout(props) {
                 thongTinDatVe.danhSachVe = danhSachGheDangDat;
                 dispatch(datVeAction(thongTinDatVe));
               }}
-              style={{backgroundColor:'#87e8de'}}
+              style={{ backgroundColor: "#87e8de" }}
               className="w-full text-center py-3 font-bold text-2xl cursor-pointer"
             >
               ĐẶT VÉ
@@ -310,29 +322,25 @@ function Checkout(props) {
 
 const { TabPane } = Tabs;
 
-// function callback(key) {
-//   console.log(key);
-// }
-
 export default function CheckoutTab(props) {
   const { tabActive } = useSelector((state) => state.QuanLyDatVeReducer);
   const dispatch = useDispatch();
 
   const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
 
-  useEffect(()=>{
-    return ()=>{
+  useEffect(() => {
+    return () => {
       dispatch({
-        type:CHANGE_TAB_ACTIVE,
-        number:'1'
-      })
-    }
-  },[]);
+        type: CHANGE_TAB_ACTIVE,
+        number: "1",
+      });
+    };
+  }, []);
 
   const operations = (
     <Fragment>
-      {!_.isEmpty(userLogin) ? 
-        <Fragment>
+      {!_.isEmpty(userLogin) ? (
+        <div>
           <button
             onClick={() => {
               history.push("/profile");
@@ -345,13 +353,12 @@ export default function CheckoutTab(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor:'#87e8de'
+                backgroundColor: "#87e8de",
               }}
               className="rounded-full text-2xl font-bold"
             >
               {userLogin.taiKhoan.substr(0, 1)}
             </div>
-            Hello! {userLogin.taiKhoan}{" "}
           </button>{" "}
           <button
             onClick={() => {
@@ -360,10 +367,12 @@ export default function CheckoutTab(props) {
               history.push("/home");
               window.location.reload();
             }}
-            style={{color:'00474f', fontWeight:'bold'}}>
+            className="font-bold"
+          >
             Đăng xuất
           </button>{" "}
-        </Fragment> : (
+        </div>
+      ) : (
         ""
       )}
     </Fragment>
@@ -388,9 +397,17 @@ export default function CheckoutTab(props) {
         <TabPane tab="02 KẾT QUẢ ĐẶT VÉ" key="2">
           <KetQuaDatVe {...props} />
         </TabPane>
-        <TabPane tab={<NavLink to="/"><HomeOutlined style={{color:'#000'}} className="text-2xl text-black mb-2" /></NavLink>} key="3">
-        
-        </TabPane>
+        <TabPane
+          tab={
+            <NavLink to="/home">
+              <HomeOutlined
+                style={{ color: "#000" }}
+                className="text-2xl text-black mb-2"
+              />
+            </NavLink>
+          }
+          key="3"
+        ></TabPane>
       </Tabs>
     </div>
   );
@@ -413,15 +430,19 @@ function KetQuaDatVe(props) {
     return thongTinNguoiDung.thongTinDatVe?.map((ticket, index) => {
       const seats = _.first(ticket.danhSachGhe);
       return (
-        <div className="p-2 lg:w-1/3 md:w-1/2 w-full" key={index}>
-          <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
+        <div
+          className="flex iphone:m-1 md:mx-auto md:my-1 lg:m-2 box-border md:w-1/2 lg:w-1/3"
+          style={{ backgroundColor: "#e6fffb", border: "4px solid #13c2c2" }}
+          key={index}
+        >
+          <div className="h-full flex items-center m-2 rounded-lg">
             <img
               alt="team"
-              className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+              className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-2"
               src="https://picsum.photos/200/200"
             />
             <div className="flex-grow">
-              <h2 className="text-gray-900 title-font font-medium">
+              <h2 className="text-gray-900 title-font font-bold">
                 {ticket.tenPhim}
               </h2>
               <p className="text-gray-500">
@@ -433,7 +454,7 @@ function KetQuaDatVe(props) {
                 Tên rạp: {seats.tenCumRap} - Ghế{" "}
                 {_.sortBy(ticket.danhSachGhe, ["maGhe"]).map((ghe, index) => {
                   return (
-                    <span key={index} className="text-red-300 font-bold">
+                    <span key={index} className="font-bold" style={{color:'#08979c'}}>
                       [{ghe.tenGhe}]{" "}
                     </span>
                   );
@@ -447,18 +468,21 @@ function KetQuaDatVe(props) {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-4">
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="flex flex-col text-center w-full mb-20">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-purple-900">
+        <div className="px-2 iphone:py-6 iphonePlus:py-8 md:py-10 lg:py-20 mx-auto">
+          <div className="flex flex-col text-center w-full mb-8">
+            <h1
+              className="iphone:text-2xl iphonePlus:text-2xl md:text-4xl lg:text-4xl font-medium title-font"
+              style={{ color: "#08979c" }}
+            >
               Lịch sử đặt vé khách hàng
             </h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
+            <p className="lg:w-2/3 mx-auto mb-2 text-base">
               Vui lòng kiểm tra lại thông tin địa điểm và thời gian chiếu phim!
             </p>
           </div>
-          <div className="flex flex-wrap -m-2">{renderTicketItem()}</div>
+          <div className="flex iphone:flex-col md:flex-row md:flex-wrap lg:flex-nowrap">{renderTicketItem()}</div>
         </div>
       </section>
     </div>

@@ -1,4 +1,4 @@
-import { SET_DANH_SACH_PHIM, SET_THONG_TIN_PHIM } from "./types/QuanLyPhimType";
+import { SET_DANH_SACH_PHIM, SET_THONG_TIN_PHIM } from "../types/QuanLyPhimType";
 import {
   layDanhSachPhim,
   themPhimUploadHinh,
@@ -8,11 +8,11 @@ import {
 } from "../../services/quanLyPhimService";
 import { history } from "../../App";
 
-export const layDanhSachPhimAction = () => {
+export const layDanhSachPhimAction = (tenPhim = "") => {
   return async (dispatch) => {
     try {
       // Sd tham so thamSo
-      const result = await layDanhSachPhim();
+      const result = await layDanhSachPhim(tenPhim);
 
       dispatch({
         type: SET_DANH_SACH_PHIM,
@@ -40,10 +40,9 @@ export const capNhatPhimUploadAction = (formData) => {
     try {
       let result = await capNhatPhimUpload(formData);
       alert("Cập nhật thành công!");
-      console.log('result',result);
+      console.log("result", result);
       dispatch(layDanhSachPhimAction());
       history.push("/admin/films");
-    
     } catch (errors) {
       console.log("errors", errors.response?.data);
     }
@@ -64,18 +63,16 @@ export const layThongTinPhimAction = (maPhim) => {
   };
 };
 
-
 export const xoaPhimAction = (maPhim) => {
   return async (dispatch) => {
     try {
       const result = await xoaPhim(maPhim);
-      alert ('Xoá phim thành công!');
+      alert("Xoá phim thành công!");
 
       // Sau khi xoá xong load lại danh sách phim mới
       dispatch(layDanhSachPhimAction());
-    
     } catch (errors) {
       console.log("errors", errors.response?.data);
     }
-  }
-}
+  };
+};

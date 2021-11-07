@@ -1,5 +1,4 @@
-import { QuanLyRapService } from "../../services/QuanLyRapService";
-import { SET_CHI_TIET_PHIM, SET_HE_THONG_RAP_CHIEU } from "./types/QuanLyRapType";
+import { SET_CHI_TIET_PHIM, SET_HE_THONG_RAP_CHIEU } from "../types/QuanLyRapType";
 import { layThongTinLichChieuPhim } from "../../services/QuanLyRapService";
 import { layDanhSachHeThongRap } from "../../services/QuanLyRapService";
 

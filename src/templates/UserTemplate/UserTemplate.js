@@ -7,7 +7,7 @@ export const UserTemplate = (props) => {
   const { Component, ...restProps } = props;
 
   useEffect(() => {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   });
 
   return (
@@ -19,8 +19,26 @@ export const UserTemplate = (props) => {
           <Fragment>
             <div className="lg:flex">
               <Component {...propsRoute} />
-              <div className="hidden lg:flex items-center justify-center bg-indigo-100 flex-1 h-screen">
-                <div className="max-w-xs transform duration-200 hover:scale-110 cursor-pointer">
+              <div className="hidden lg:flex items-center justify-center flex-1 h-screen">
+                <div>
+                  <h3
+                    className="text-5xl font-bold"
+                    style={{ color: "#876800" }}
+                  >
+                    CYBERLEARN
+                  </h3>
+                  <p className="text-lg">
+                    <span
+                      className="text-2xl bold"
+                      style={{ color: "#ad8b00" }}
+                    >
+                      Cyberlearn
+                    </span>{" "}
+                    - Khởi đầu sự nghiệp của bạn. Hãy trở thành lập trình chuyên
+                    nghiệp tại Cyberlearn.
+                  </p>
+                </div>
+                {/* <div className="max-w-xs transform duration-200 hover:scale-110 cursor-pointer">
                   <svg
                     className="w-5/6 mx-auto"
                     xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +203,7 @@ export const UserTemplate = (props) => {
                       fill="#2f2e41"
                     />
                   </svg>
-                </div>
+                </div> */}
               </div>
             </div>
           </Fragment>

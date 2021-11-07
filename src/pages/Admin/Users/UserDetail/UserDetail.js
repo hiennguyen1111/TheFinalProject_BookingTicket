@@ -1,31 +1,37 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Table, Input, Space, Button } from "antd";
+import { Table, Space, Input } from "antd";
 import {
   SearchOutlined,
   DeleteOutlined,
   EditOutlined,
-  CalendarOutlined,
 } from "@ant-design/icons";
+import { Button } from "antd";
 import {
-  layDanhSachPhimAction,
-  xoaPhimAction,
-} from "../../../redux/actions/QuanLyPhimActions";
+  layDanhSachNguoiDungAction,
+  xoaNguoiDungAction,
+} from "../../../../redux/actions/QuanLyNguoiDungActions";
 import { Fragment } from "react";
 import { NavLink } from "react-router-dom";
-import { history } from "../../../App";
+import { history } from "../../../../App";
 import Highlighter from "react-highlight-words";
 
 const { Search } = Input;
 
-export default function Films(props) {
+export default function UserDetail(props) {
   useEffect(() => {
-    dispatch(layDanhSachPhimAction());
+    dispatch(layDanhSachNguoiDungAction());
   }, []);
 
-  const { arrFilmDefault } = useSelector((state) => state.QuanLyPhimReducer);
+  const { danhSachNguoiDung } = useSelector(
+    (state) => state.QuanLyNguoiDungReducer
+  );
 
   const dispatch = useDispatch();
+
+  const { size } = props;
+
+  console.log("size",size);
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -130,71 +136,103 @@ export default function Films(props) {
   });
 
   const columns = [
-    {title: "Mã phim",
-    dataIndex: "maPhim",
-      sorter: (a, b) => a.maPhim - b.maPhim,
+    {
+      title: "Họ tên",
+      dataIndex: "hoTen",
+      sorter: (a, b) => {
+        let hoTenA = a.hoTen.toLowerCase().trim();
+        let hoTenB = b.hoTen.toLowerCase().trim();
+        if (hoTenA > hoTenB) {
+          return 1;
+        }
+        return -1;
+      },
       sortDirections: ["descend", "ascend"],
       width: "15%",
-      responsive: ["md"],
+      responsive: ["lg"],
+      ...getColumnSearchProps("hoTen"),
     },
-    {title: "Hình ảnh",
-    dataIndex: "hinhAnh",
-      render: (text, film, index) => {
+    {
+      title: "Ảnh đại diện",
+      dataIndex: "hinhAnh",
+      render: (text, nguoiDung, index) => {
         return (
           <Fragment key={index}>
             <img
-              src={film.hinhAnh}
-              alt="{film.tenPhim}"
+              src={`https://picsum.photos/id/${index}/50/50`}
+              alt={`https://picsum.photos/id/${index}/50/50`}
               width={50}
               height={50}
               onError={(e) => {
                 e.target.onError = null;
-                e.target.src = `https://picsum.photos/id/${index}/50/50`;
+                e.target.src = `https://picsum.photos/id/10/50/50`;
               }}
             />
           </Fragment>
         );
       },
-      width: "15%",
-      responsive: ["md"],
+      width: size.width >= 768 ? "15%" : "auto",
     },
-    {title: "Tên phim",
-    dataIndex: "tenPhim",
+    {
+      title: "Tài khoản",
+      dataIndex: "taiKhoan",
+      // render: (text, record, index) => {
+      //   console.log("renderTaiKhoan",record)
+      //   return (
+      //     <p>
+      //       {record.taiKhoan?.length > 11
+      //         ? record.taiKhoan.slice(0, 10) + "..."
+      //         : record.taiKhoan}    
+      //     </p>
+      //   );
+      // },
       sorter: (a, b) => {
-        let tenPhimA = a.tenPhim.toLowerCase().trim();
-        let tenPhimB = b.tenPhim.toLowerCase().trim();
-        if (tenPhimA > tenPhimB) {
+        let taiKhoanA = a.taiKhoan.toLowerCase().trim();
+        let taiKhoanB = b.taiKhoan.toLowerCase().trim();
+        if (taiKhoanA > taiKhoanB) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["descend", "ascend"],
+      width: "15%",
+      ...getColumnSearchProps("taiKhoan"),
+      responsive: ["lg"]
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: (a, b) => {
+        let emailA = a.email.toLowerCase().trim();
+        let emailB = b.email.toLowerCase().trim();
+        if (emailA > emailB) {
           return 1;
         }
         return -1;
       },
       sortDirections: ["descend", "ascend"],
       width: "25%",
-      ...getColumnSearchProps("tenPhim"),
-    },
-    {title: "Giới thiệu",
-    dataIndex: "moTa",
-      render: (text, film) => {
-        return (
-          <Fragment>
-            {film.moTa.length > 50
-              ? film.moTa.substr(0, 50) + " ..."
-              : film.moTa}
-          </Fragment>
-        );
-      },
-      sortDirections: ["descend", "ascend"],
-      width: "25%",
       responsive: ["md"],
+      ...getColumnSearchProps("email"),
     },
-    {title: "Hành động",
-    dataIndex: "maPhim",
-      render: (text, film) => {
+    {
+      title: "Mã loại người dùng",
+      dataIndex: "maLoaiNguoiDung",
+      sorter: (a, b) => a.maLoaiNguoiDung - b.maLoaiNguoiDung,
+      sortDirections: ["descend", "ascend"],
+      width: "15%",
+      responsive: ["lg"],
+    },
+    {
+      title: "Hành động",
+      dataIndex: "taiKhoan",
+      render: (text, user) => {
         return (
           <Fragment>
             <NavLink
               key={1}
-              to={`/admin/films/edit/${film.maPhim}`}
+              // className="mr-2"
+              to={`/admin/users/edituser`}
             >
               <EditOutlined
                 className="iphone:text-xl iphonePlus:text-2xl md:text-3xl bold"
@@ -205,6 +243,7 @@ export default function Films(props) {
                 }}
               />{" "}
             </NavLink>
+
             <span
               style={{ cursor: "pointer" }}
               key={2}
@@ -212,10 +251,12 @@ export default function Films(props) {
                 // Gọi action xoá
                 if (
                   window.confirm(
-                    "Bạn có chắc muốn xoá phim " + film.tenPhim + " không?"
+                    "Bạn có chắc muốn xoá tài khoản " +
+                      user.taiKhoan +
+                      " không?"
                   )
                 ) {
-                  dispatch(xoaPhimAction(film.maPhim));
+                  dispatch(xoaNguoiDungAction(user.taiKhoan));
                 }
               }}
             >
@@ -229,24 +270,23 @@ export default function Films(props) {
               />{" "}
             </span>
 
-            <NavLink
+            {/* <NavLink
               key={3}
               className="mr-2"
               onClick={() => {
                 //localStorage.setItem
-                localStorage.setItem("filmParams", JSON.stringify(film));
+                localStorage.setItem("userParams", JSON.stringify(user));
               }}
-              to={`/admin/films/showtimes/${film.maPhim}/${film.tenPhim}`}
-            >
+              to={`/admin/users/${user.taiKhoan}`}>
               <CalendarOutlined
-                className="iphone:text-xl iphonePlus:text-2xl md:text-3xl bold"
                 style={{
                   color: "#a0d911",
-                  // fontSize: "30px",
+                  fontSize: "30px",
                   fontWeight: "bold",
                 }}
               />{" "}
             </NavLink>
+           */}
           </Fragment>
         );
       },
@@ -255,11 +295,26 @@ export default function Films(props) {
     },
   ];
 
-  const data = arrFilmDefault;
+  const data = danhSachNguoiDung;
 
   const onSearch = (value) => {
-    // Gọi API lấy danh sách phim
-    dispatch(layDanhSachPhimAction(value));
+    // Gọi API lấy danh sách người dùng
+    dispatch(layDanhSachNguoiDungAction(value));
+    console.log("value", value);
+  };
+
+  const filter = (inputValue, path) => {
+    console.log(
+      "FILTER",
+      path.some(
+        (option) =>
+          option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+      )
+    );
+    return path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
   };
 
   function onChange(pagination, filters, sorter, extra) {
@@ -267,41 +322,46 @@ export default function Films(props) {
   }
 
   return (
-    <div className="container">
-      <h3 className="iphone:text-lg iphonePlus:text-xl md:text-2xl lg:text-3xl">Quản lý phim</h3>
+    <div>
+      <h3 className="iphone:text-lg iphonePlus:text-xl md:text-2xl lg:text-3xl">
+        Quản lý người dùng
+      </h3>
       <Button
         type="primary"
         shape="round"
         className="mb-5"
         onClick={() => {
-          history.push("/admin/films/addnew");
+          history.push("/admin/users/adduser");
         }}
       >
-        Thêm phim
+        Thêm tài khoản mới
       </Button>
-      {/* <Search
+      <Search
         className="mb-5"
-        placeholder="Nhập tên phim bạn muốn tìm kiếm"
+        placeholder="Nhập tên người dùng bạn muốn tìm kiếm"
         enterButton={<SearchOutlined />}
         size="large"
         onSearch={onSearch}
-      /> */}
+        showSearch={{filter, matchInputWidth: false}}
+      />
       <Table
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        rowKey={(record) => record.maPhim}
+        rowKey={(record) => record.taiKhoan}
         expandable={{
           expandedRowRender: (record) => (
             <div className="flex flex-col">
-              <p className="block mb-3 md:hidden">Mã phim: {record.maPhim}</p>
-              {/* <p className="block mb-3">Ảnh đại diện: {record.hinhAnh}</p> */}
-              {/* <p className="block mb-3 md:hidden">Email: {record.email}</p> */}
-              <p className="block mb-3">Giới thiệu: {record.moTa}</p>
+              <p className="block mb-3">Họ tên: {record.hoTen}</p>
+              <p className="block mb-3">Tài khoản: {record.taiKhoan}</p>
+              <p className="block mb-3 md:hidden">Email: {record.email}</p>
+              <p className="block mb-3">
+                Mã người dùng: {record.maLoaiNguoiDung}
+              </p>
             </div>
           ),
           rowExpandable: (record) => {
-            return window.innerWidth >= 1280 ? false : true;
+            return size.width >= 1280 ? false : true;
           },
         }}
       />

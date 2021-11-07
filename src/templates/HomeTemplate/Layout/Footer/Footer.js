@@ -1,19 +1,28 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import _ from "lodash";
-import { AppleOutlined, FacebookOutlined } from "@ant-design/icons";
+import {
+  AppleOutlined,
+  ChromeOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  WeiboOutlined,
+  YoutubeOutlined,
+} from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 
 export default function Footer(props) {
   const { heThongRapChieu } = useSelector((state) => state.QuanLyRapReducer);
-  const arrHeThongRap = _.map(heThongRapChieu, (heThongRap) => _.pick(heThongRap, ["maHeThongRap", "tenHeThongRap", "logo"]));
+  const arrHeThongRap = _.map(heThongRapChieu, (heThongRap) =>
+    _.pick(heThongRap, ["maHeThongRap", "tenHeThongRap", "logo"])
+  );
   console.log("arr", arrHeThongRap);
 
   return (
     <footer className="py-6 bg-coolGray-100 text-coolGray-900 bg-gray-800">
       <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
-        <div className="grid grid-cols-12">
-          <div className="pb-6 col-span-full md:pb-0 md:col-span-6">
+        <div className="flex iphone:flex-col md:flex-row lg:flex-row w-full p-4 flex-wrap">
+          <div className="iphone:full md:w-1/4 p-2">
             <NavLink
               to="/"
               className="flex justify-center space-x-3 md:justify-start text-black"
@@ -24,28 +33,61 @@ export default function Footer(props) {
               />
             </NavLink>
           </div>
-          
-          <div className="col-span-6 text-center md:text-left md:col-span-3">
-            <p className="pb-1 text-lg font-medium text-white">PARTNER</p>
-            <div className="grid grid-cols-3" style={{ color: "#fff" }}>
+
+          <div className="iphone:full md:w-1/4 p-2">
+            <p className="pb-1 text-lg text-white font-medium">
+              CUSTOMER SERVICE
+            </p>
+            <p className="text-white">
+              Working hour: 8:00 - 22:00 Monday to Sunday, including Public
+              Holidays
+            </p>
+            <div>
+              <a href="#" class="hover:text-violet-600">
+                Hotline: 1900 6666
+              </a>
+            </div>
+            <div>
+              <a href="#" class="hover:text-violet-600">
+                Email support: hoidap@cybermovie.vn
+              </a>
+            </div>
+          </div>
+
+          <div className="iphone:w-full md:w-1/4 p-2">
+            <p className="pb-1 text-lg font-medium text-white">THEATER</p>
+            <div className="flex flex-row flex-wrap text-white">
               {arrHeThongRap.map((htr, index) => {
                 return (
-                  <div key={index}>
-                    <img src={htr.logo} style={{ width: "50px" }} />
+                  <div className="iphone:w-1/6 md:w-1/3" key={index}>
+                    <img src={htr.logo} className="iphone:w-8 md:w-12" />
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="col-span-6 text-center md:text-left md:col-span-3 text-white">
-            <p className="pb-1 text-lg font-medium">Mobile App</p>
-            <div className="flex text-white">
-              <div className="mr-5">
-                <AppleOutlined className="text-2xl" />
+          <div className="iphone:w-full md:w-1/4 text-white p-2">
+            <p className="pb-1 text-lg font-medium">MOBILE APP</p>
+            
+            <div className="flex flex-row flex-wrap text-white">
+              <div className="mr-4 hover:text-blue-600">
+                <AppleOutlined className="text-3xl" />
               </div>
-              <div>
-                <FacebookOutlined className="text-2xl" />
+              <div className="mr-4 hover:text-blue-600">
+                <FacebookOutlined className="text-3xl" />
+              </div>
+              <div className="mr-4 hover:text-blue-600">
+                <InstagramOutlined className="text-3xl" />
+              </div>
+              <div className="mr-4 hover:text-blue-600">
+                <ChromeOutlined className="text-3xl" />
+              </div>
+              <div className="mr-4 hover:text-blue-600">
+                <WeiboOutlined className="text-3xl" />
+              </div>
+              <div className="hover:text-blue-600">
+                <YoutubeOutlined className="text-3xl" />
               </div>
             </div>
           </div>

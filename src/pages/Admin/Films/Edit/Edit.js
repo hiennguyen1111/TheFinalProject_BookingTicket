@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Radio, DatePicker, InputNumber, Switch } from "antd";
-import { useFormik } from "formik";
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { withFormik, ErrorMessage, Field } from "formik";
+import { connect, useDispatch } from "react-redux";
+import { history } from "../../../../App";
+import { editFilmSchema } from "../../../../Validation/AddNewFilmValidation";
+import { DatePicker, InputNumber, Switch } from "antd";
 import { layThongTinPhimAction, capNhatPhimUploadAction } from "../../../../redux/actions/QuanLyPhimActions";
+import moment from "moment";
 
-const Edit = (props) => {
-  const [componentSize, setComponentSize] = useState("default");
-  const { thongTinPhim } = useSelector((state) => state.QuanLyPhimReducer);
-  const [imgSrc, setImgSrc] = useState("");
+
+function Edit(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,53 +16,32 @@ const Edit = (props) => {
     dispatch(layThongTinPhimAction(id));
   }, []);
 
-  const formik = useFormik({
-    enableReinitialize:true, // thuộc tính này áp dụng độc nhất trang edit, không áp dụng vs các state khác
-    initialValues: {
-      maPhim: thongTinPhim.maPhim,
-      tenPhim: thongTinPhim?.tenPhim,
-      trailer: thongTinPhim.trailer,
-      moTa: thongTinPhim.moTa,
-      ngayKhoiChieu: thongTinPhim.ngayKhoiChieu,
-      dangChieu: thongTinPhim.danhGia,
-      sapChieu: thongTinPhim.sapChieu,
-      hot: thongTinPhim.hot,
-      danhGia: thongTinPhim.danhGia,
-      hinhAnh: null,
-      maNhom:'GP10',
-    },
-    onSubmit: (values) => {
-      console.log("values", values);
-      // Tạo đối tượng formdata => Đưa giá trị values từ formik vào formdata
-      let formData = new FormData();
-      for (let key in values) {
-        if (key !== "hinhAnh"){
-          formData.append(key, values[key]);
-        } else {
-          if (values.hinhAnh !== null) {
-            formData.append("File", values.hinhAnh, values.hinhAnh.name);
-          }
-        }
-      }
-      // Cập nhật phim upload hình
-      dispatch(capNhatPhimUploadAction(formData));
-    }
-  });
+  const [imgSrc, setImgSrc] = useState("");
+
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleSubmit,
+    setValues,
+    setFieldValue,
+  } = props;
 
   const handleChangeDatePicker = (value) => {
     let ngayKhoiChieu = moment(value);
-    formik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu);
+    setFieldValue("ngayKhoiChieu", ngayKhoiChieu);
   };
 
   const handleChangeSwitch = (name) => {
     return (value) => {
-      formik.setFieldValue(name, value);
+      setFieldValue(name, value);
     };
   };
 
   const handleChangeInputNumber = (name) => {
     return (value) => {
-      formik.setFieldValue(name, value);
+      setFieldValue(name, value);
     };
   };
 
@@ -76,7 +55,7 @@ const Edit = (props) => {
       file.type === "image/png"
     ) {
       // Đem dữ liệu file lưu vào formik
-      await formik.setFieldValue("hinhAnh", file);
+      await setFieldValue("hinhAnh", file);
       // Tạo đối tượng để đọc file
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -87,83 +66,237 @@ const Edit = (props) => {
     
   };
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+  }
+
 
   return (
-    <>
-      <Form
-        onSubmitCapture={formik.handleSubmit}
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        layout="horizontal"
-        initialValues={{
-          size: componentSize,
-        }}
-        onValuesChange={onFormLayoutChange}
-        size={componentSize}
-      >
-        <h3>Thêm phim mới</h3>
+    <form className="w-full" onSubmit={handleSubmit}>
+      <div className="flex flex-col justify-center w-full iphone:pt-8 md:pt-12 lg:pt-16">
+        <h3 className="flex flex-row w-full justify-center iphone:text-xl md:text-2xl pb-2">
+          Chỉnh sửa thông tin phim
+        </h3>
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Tên phim</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Field
+              className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              onChange={handleChange}
+              value={values.tenPhim}
+              name="tenPhim"
+            />
+            <ErrorMessage name="tenPhim">
+              {(msg) => {
+                return <p className="text-red-600 text-xs text-left">{msg}</p>;
+              }}
+            </ErrorMessage>
+          </div>
+        </div>
 
-        <Form.Item label="Form Size" name="size">
-          <Radio.Group>
-            <Radio.Button value="small">Small</Radio.Button>
-            <Radio.Button value="default">Default</Radio.Button>
-            <Radio.Button value="large">Large</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Trailer</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Field
+              className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              onChange={handleChange}
+              value={values.trailer}
+              name="trailer"
+            />
+            <ErrorMessage name="trailer">
+              {(msg) => {
+                return <p className="text-red-600 text-xs text-left">{msg}</p>;
+              }}
+            </ErrorMessage>
+          </div>
+        </div>
 
-        <Form.Item label="Tên phim">
-          <Input name="tenPhim" onChange={formik.handleChange} value={formik.values.tenPhim} />
-        </Form.Item>
-        <Form.Item label="Trailer">
-          <Input name="trailer" onChange={formik.handleChange} value={formik.values.trailer} />
-        </Form.Item>
-        <Form.Item label="Mô tả">
-          <Input name="moTa" onChange={formik.handleChange} value={formik.values.moTa} />
-        </Form.Item>
-        <Form.Item label="Ngày khởi chiếu">
-          <DatePicker format={"DD/MM/YYYY"} onChange={handleChangeDatePicker} value={moment(formik.values.ngayKhoiChieu)} />
-        </Form.Item>
-        <Form.Item label="Đang chiếu">
-          <Switch onChange={handleChangeSwitch("dangChieu")} checked={formik.values.dangChieu} />
-        </Form.Item>
-        <Form.Item label="Sắp chiếu">
-          <Switch onChange={handleChangeSwitch("sapChieu")} checked={formik.values.sapChieu} />
-        </Form.Item>
-        <Form.Item label="Hot">
-          <Switch onChange={handleChangeSwitch("hot")} checked={formik.values.hot} />
-        </Form.Item>
-        <Form.Item label="Đánh giá">
-          <InputNumber
-            onChange={handleChangeInputNumber("danhGia")}
-            min={1}
-            max={10}
-            value={formik.values.danhGia}
-          />
-        </Form.Item>
-        <Form.Item label="Hình ảnh">
-          <input
-            type="file"
-            onChange={handleChangeFile}
-            accept="image/png, image/jpeg, image/gif, image/png"
-          />
-          <br />
-          <img src={imgSrc === '' ? thongTinPhim.hinhAnh : imgSrc} style={{ width: 100, height: 100 }} alt="..." />
-        </Form.Item>
-        <Form.Item label="Tác vụ">
-          <button type="submit" className="text-white bg-blue-400 p-2">
-            Lưu thay đổi
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Mô tả</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Field
+              className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              onChange={handleChange}
+              value={values.moTa}
+              name="moTa"
+            />
+            <ErrorMessage name="moTa">
+              {(msg) => {
+                return <p className="text-red-600 text-xs text-left">{msg}</p>;
+              }}
+            </ErrorMessage>
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Ngày khởi chiếu</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <DatePicker
+              value = {moment(values.ngayKhoiChieu)}
+              disabledDate={disabledDate}
+              className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              format={"DD/MM/YYYY"}
+              onChange={handleChangeDatePicker}
+            />
+            <ErrorMessage name="ngayKhoiChieu">
+              {(msg) => {
+                return <p className="text-red-600 text-xs text-left">{msg}</p>;
+              }}
+            </ErrorMessage>
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Đang chiếu</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Switch
+              className="w-4"
+              defaultChecked = {values.dangChieu}
+              onChange={handleChangeSwitch("dangChieu")}
+            />
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Sắp chiếu</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Switch 
+            className="w-4"
+            defaultChecked = {values.sapChieu}
+            onChange={handleChangeSwitch("sapChieu")} />
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Hot</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <Switch 
+            className="w-4"
+            defaultChecked = {values.hot}
+            onChange={handleChangeSwitch("hot")} />
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Đánh giá</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <InputNumber
+              value={values.danhGia}
+              onChange={handleChangeInputNumber("danhGia")}
+              min={1}
+              max={10}
+            />
+          </div>
+        </div>
+
+        <div className="flex iphone:flex-col md:flex-row w-full gap-2 mb-3">
+          <div className="flex iphone:w-full iphone:justify-start md:justify-end md:w-1/3 md:mr-4">
+            <label>Hình ảnh</label>
+          </div>
+          <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
+            <input
+              type="file"
+              onChange={handleChangeFile}
+              accept="image/png, image/jpeg, image/gif, image/png"
+            />
+            <br />
+            <img src={imgSrc === '' ? values.hinhAnh : imgSrc} style={{ width: 100, height: 100 }} alt="..." />
+            <ErrorMessage name="hinhAnh">
+              {(msg) => {
+                return <p className="text-red-600 text-xs text-left">{msg}</p>;
+              }}
+            </ErrorMessage>
+          </div>
+        </div>
+
+        <div className="flex flex-row w-full justify-center mt-2">
+          <button
+            type="submit"
+            className="text-white p-2 rounded"
+            style={{ backgroundColor: "#1890ff" }}
+          >
+            Cập nhật
           </button>
-        </Form.Item>
-      </Form>
-    </>
-  );
-};
 
-export default Edit;
+          <button
+            type="submit"
+            onClick={() => {
+              history.push("/admin/films");
+            }}
+            className="p-2 text-white ml-2 rounded"
+            style={{ backgroundColor: "#141414", cursor: "pointer" }}
+          >
+            Quay lại
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+const FilmForm = withFormik({
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    const { thongTinPhim } = props;
+    console.log("thongTinPhim", thongTinPhim);
+    return {
+      maPhim: thongTinPhim.maPhim,
+      tenPhim: thongTinPhim?.tenPhim,
+      trailer: thongTinPhim.trailer,
+      moTa: thongTinPhim.moTa,
+      ngayKhoiChieu: thongTinPhim.ngayKhoiChieu,
+      dangChieu: thongTinPhim.danhGia,
+      sapChieu: thongTinPhim.sapChieu,
+      hot: thongTinPhim.hot,
+      danhGia: thongTinPhim.danhGia,
+      hinhAnh: null,
+      maNhom: "GP10",
+    };
+  },
+  validationSchema: editFilmSchema,
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    const { dispatch } = props;
+    console.log("valueshinhAnh", values);
+    // Tạo đối tượng formdata => Đưa giá trị values từ formik vào formdata
+    let formData = new FormData();
+    for (let key in values) {
+      if (key !== "hinhAnh") {
+        formData.append(key, values[key]);
+      } else {
+        if (values.hinhAnh !== null) {
+          formData.append("File", values.hinhAnh, values.hinhAnh.name);
+        }
+      }
+    }
+    // Cập nhật phim upload hình
+    dispatch(capNhatPhimUploadAction(formData));
+  },
+
+  // displayName: "BasicForm",
+})(Edit);
+
+const mapStateToProps = (state) => ({
+  thongTinPhim: state.QuanLyPhimReducer.thongTinPhim,
+});
+export default connect(mapStateToProps)(FilmForm);

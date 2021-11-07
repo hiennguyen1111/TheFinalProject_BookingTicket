@@ -2,21 +2,38 @@ import { baseService } from "./baseService";
 import { GROUPID } from "../util/settings/config";
 
 export class QuanLyRapService extends baseService {
+  constructor() {
+    super();
+  }
 
-    constructor() {
-        super();
-    }
+  layDanhSachHeThongRap = () => {
+    return this.get(
+      `/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=${GROUPID}`
+    );
+  };
 
-    layDanhSachHeThongRap = () => {
-        return this.get(`/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=${GROUPID}`);
+  layThongTinLichChieuPhim = (maPhim) => {
+    return this.get(`/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`);
+  };
 
-    }
+  layThongTinHeThongRap = () => {
+    return this.get(
+      `/api/QuanLyRap/LayThongTinLichChieuHeThongRap`
+    );
+  };
 
-    layThongTinLichChieuPhim = (maPhim) => {
-        return this.get(`/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`);
-    }
+  layThongTinCumRap = (maHeThongRap) => {
+    return this.get(
+      `/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`
+    );
+  };
 
 }
 
 const qlRapService = new QuanLyRapService();
-export const {layDanhSachHeThongRap,layThongTinLichChieuPhim} = qlRapService;
+export const {
+  layDanhSachHeThongRap,
+  layThongTinLichChieuPhim,
+  layThongTinHeThongRap,
+  layThongTinCumRap,
+} = qlRapService;

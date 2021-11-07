@@ -1,6 +1,4 @@
-// import axios from 'axios'
-// import { DOMAIN } from '../../util/settings/config';
-import { SET_CAROUSEL } from './types/CarouselType';
+import { SET_CAROUSEL } from '../types/CarouselType';
 import { layDanhSachBanner } from '../../services/quanLyPhimService';
 
 export const getCarouselAction = () => {

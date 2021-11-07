@@ -5,7 +5,7 @@ export class baseService {
   //put json về phía backend
   put = (url, model) => {
     return Axios({
-      url: `${DOMAIN}/${url}`,
+      url: `${DOMAIN}${url}`,
       method: "PUT",
       data: model,
       headers: {

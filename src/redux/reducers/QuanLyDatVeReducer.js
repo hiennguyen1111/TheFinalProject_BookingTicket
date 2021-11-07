@@ -6,21 +6,22 @@ import {
   SET_CHI_TIET_PHONG_VE,
   DAT_VE,
   DAT_GHE,
-} from "../actions/types/QuanLyDatVeType";
+} from "../types/QuanLyDatVeType";
 
 const stateDefault = {
   chiTietPhongVe: new ThongTinLichChieu(),
   danhSachGheDangDat: [],
-  danhSachGheKhachDat: [{
-    daDat: false,
-    giaVe: 75000,
-    loaiGhe: "Thuong",
-    maGhe: 75401,
-    maRap: 626,
-    stt: "01",
-    taiKhoanNguoiDat: null,
-    tenGhe: "01"
-  },
+  danhSachGheKhachDat: [
+  //   {
+  //   daDat: false,
+  //   giaVe: 75000,
+  //   loaiGhe: "Thuong",
+  //   maGhe: 75401,
+  //   maRap: 626,
+  //   stt: "01",
+  //   taiKhoanNguoiDat: null,
+  //   tenGhe: "01"
+  // },
 ],
   tabActive: "1",
 };

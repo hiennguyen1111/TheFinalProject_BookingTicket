@@ -6,7 +6,7 @@ import moment from "moment";
 const { TabPane } = Tabs;
 
 export default class HomeMenu extends React.PureComponent {
-  state = { tabPosition: "left" };
+  state = {tabPosition: window.innerWidth < 1280 ? "top" : "left"};
 
   changeTabPosition = (e) => {
     this.setState({ tabPosition: e.target.value });
@@ -27,16 +27,16 @@ export default class HomeMenu extends React.PureComponent {
               return (
                 <TabPane
                   tab={
-                    <div style={{ width: "300px", display: "flex" }}>
+                    <div className="flex">
                       <img
+                        className="iphone:w-8 iphone:h-8 md:w-11 md:h-11 lg:w-14 lg:h-14"
                         src={heThongRap.logo}
-                        width="50"
+                        // width="50"
                         alt="{heThongRap.logo}"
                       />
                       <br />
-                      <div className="text-left ml-2">
-                        {cumRap.tenCumRap}
-                        <p className="text-blue-400">Chi tiết</p>
+                      <div className="text-left mx-2 md:mr-6">
+                        <div>{cumRap.tenCumRap}</div>
                       </div>
                     </div>
                   }
@@ -57,17 +57,18 @@ export default class HomeMenu extends React.PureComponent {
                               }}
                             />
                             <div className="ml-2">
-                              <h1 className="text-2xl text-blue-900">
+                              <h1 className="text-2xl" style={{color:'#002766'}}>
                                 {phim.tenPhim}
                               </h1>
                               <p>{cumRap.diaChi}</p>
-                              <div className="grid grid-cols-5 gap-6">
+                              <div className="flex flex-row flex-wrap">
                                 {phim.lstLichChieuTheoPhim
-                                  ?.slice(0, 10)
+                                  ?.slice(0, 12)
                                   .map((lichChieu, index) => {
                                     return (
                                       <NavLink
-                                        className="text-xl text-blue-600"
+                                        style={{color:'#1890ff'}}
+                                        className="text-xl mr-6"
                                         to={`/checkout/${lichChieu.maLichChieu}`}
                                         key={index}
                                       >

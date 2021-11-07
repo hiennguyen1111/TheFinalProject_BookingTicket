@@ -3,8 +3,9 @@ import {
   SET_FILM_DANG_CHIEU,
   SET_FILM_SAP_CHIEU,
   SET_THONG_TIN_PHIM,
-} from "../actions/types/QuanLyPhimType";
-import { SET_CHI_TIET_PHIM } from "../actions/types/QuanLyRapType";
+  OPEN_MODAL
+} from "../types/QuanLyPhimType";
+import { SET_CHI_TIET_PHIM } from "../types/QuanLyRapType";
 
 const stateDefault = {
   arrFilm:[],
@@ -508,11 +509,14 @@ const stateDefault = {
   //   },
   // ],
 
-  dangChieu: true,
-  sapChieu: true,
+  dangChieu: false,
+  sapChieu: false,
   arrFilmDefault: [],
   filmDetail:{},
   thongTinPhim:{},
+  openModal: false,
+  maPhimModal: 0,
+  
 };
 
 export const QuanLyPhimReducer = (state = stateDefault, action) => {
@@ -520,24 +524,33 @@ export const QuanLyPhimReducer = (state = stateDefault, action) => {
     case SET_DANH_SACH_PHIM: {
       state.arrFilm = action.arrFilm;
       state.arrFilmDefault = state.arrFilm;
-      return { ...state };
-    }
-
-    case SET_FILM_DANG_CHIEU: {
-      state.dangChieu = !state.dangChieu;
-
-      state.arrFilm = state.arrFilmDefault.filter(
-        (film) =>
-          film.dangChieu === state.dangChieu);
+      console.log('arrFilm',state.arrFilm);
       return { ...state };
     }
 
     case SET_FILM_SAP_CHIEU: {
+      if(state.dangChieu === true){
+        state.dangChieu = !state.dangChieu
+      }
       state.sapChieu = !state.sapChieu;
 
       state.arrFilm = state.arrFilmDefault.filter(
         (film) =>
           film.sapChieu === state.sapChieu);
+          console.log('sapChieu',state.arrFilm);
+      return { ...state };
+    }
+
+    case SET_FILM_DANG_CHIEU: {
+      if(state.sapChieu === true){
+        state.sapChieu = !state.sapChieu;
+      }
+      state.dangChieu = !state.dangChieu;
+
+      state.arrFilm = state.arrFilmDefault.filter(
+        (film) =>
+          film.dangChieu === state.dangChieu);
+          console.log('dangChieu',state.arrFilm);
       return { ...state };
     }
 
@@ -551,6 +564,12 @@ export const QuanLyPhimReducer = (state = stateDefault, action) => {
       return { ...state };
     }
 
+    case OPEN_MODAL: {
+      state.openModal = !state.openModal;
+      state.maPhimModal = action.maPhimModal;
+      console.log("action.maPhimModal", action.maPhimModal);
+      return { ...state };
+    }
 
     default:
       return { ...state };

@@ -49,7 +49,7 @@ export default function Header(props) {
     return <Fragment>
       <button
             onClick={() => {
-              history.push("/register");
+              history.push("/profile");
             }}
             className="self-center px-8 py-3 font-semibold rounded bg-violet-600 text-coolGray-50"
           >
@@ -72,8 +72,8 @@ export default function Header(props) {
   };
 
   return (
-    <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
-      <div className="container flex justify-between h-16 mx-auto">
+    <header className="p-4 bg-gray-800 text-white fixed w-full h-1/10 z-10">
+      <div className="container flex justify-between h-16 mx-auto items-center">
         <NavLink
           to="/"
           aria-label="Back to homepage"
@@ -84,32 +84,44 @@ export default function Header(props) {
             alt="cybersoftlogo"
           />
         </NavLink>
-        <ul className="items-stretch hidden space-x-3 lg:flex">
+        <ul className="items-stretch hidden space-x-3 lg:flex mb-0">
           <li className="flex">
             <NavLink
               to="/home"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent border-violet-600 text-white text-xl"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent border-violet-600 text-white text-md"
               activeClassname="border-b-2 border-white"
             >
               {t("Home")}
             </NavLink>
           </li>
+
           <li className="flex">
             <NavLink
               to="/contact"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-xl"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-md"
               activeClassname="border-b-2 border-white"
             >
               {t("Contact")}
             </NavLink>
           </li>
+
           <li className="flex">
             <NavLink
               to="/news"
-              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-xl"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-md"
               activeClassname="border-b-2 border-white"
             >
               {t("News")}
+            </NavLink>
+          </li>
+
+          <li className="flex">
+            <NavLink
+              to="/application"
+              className="flex items-center px-4 -mb-1 border-b-2 border-transparent text-white text-md"
+              activeClassname="border-b-2 border-white"
+            >
+              {t("Application")}
             </NavLink>
           </li>
         </ul>
