@@ -482,7 +482,7 @@ function KetQuaDatVe(props) {
               Vui lòng kiểm tra lại thông tin địa điểm và thời gian chiếu phim!
             </p>
           </div>
-          <div className="flex iphone:flex-col md:flex-row md:flex-wrap lg:flex-nowrap">{renderTicketItem()}</div>
+          <div className="flex iphone:flex-col md:flex-row md:flex-wrap lg:flex-wrap lg:justify-center">{renderTicketItem()}</div>
         </div>
       </section>
     </div>
