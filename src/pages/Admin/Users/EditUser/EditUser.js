@@ -54,7 +54,7 @@ function EditUser(props) {
           <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
           <Field
             disabled
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             onChange={handleChange}
             value={values.taiKhoan}
@@ -129,7 +129,7 @@ function EditUser(props) {
           <div className="flex flex-col iphone:w-full md:w-2/3 md:ml-4">
           <Field
             disabled
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="iphone:w-full md:w-3/4 lg:w-1/2 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             onChange={handleChange}
             value={values.maLoaiNguoiDung}

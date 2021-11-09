@@ -1,5 +1,9 @@
 import * as yup from "yup";
 
+
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+
 export const userSchema = yup.object().shape({
   hoTen: yup
     .string()
@@ -20,6 +24,7 @@ export const userSchema = yup.object().shape({
     .email("Vui lòng nhập đúng định dạng email!"),
   soDt: yup
     .string()
+    .matches(phoneRegExp, 'Số điện thoại này không tồn tại')
     .min(10, "Số điện thoại phải là 10 số")
     .max(10, "Số điện thoại phải là 10 số")
     .required("Vui lòng nhập số điện thoại"),
@@ -34,7 +39,12 @@ export const addUserSchema = yup.object().shape({
     .trim()
     .required("Vui lòng nhập email")
     .email("Vui lòng nhập đúng định dạng email!"),
-  soDt: yup.string().trim().required("Vui lòng nhập số điện thoại"),
+  soDt: yup
+    .string()
+    .matches(phoneRegExp, 'Số điện thoại này không tồn tại')
+    .min(10, "Số điện thoại phải là 10 số")
+    .max(10, "Số điện thoại phải là 10 số")
+    .required("Vui lòng nhập số điện thoại"),
   maLoaiNguoiDung: yup
     .string()
     .trim()
