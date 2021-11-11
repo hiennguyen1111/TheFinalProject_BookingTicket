@@ -4,7 +4,7 @@ import Header from "./Layout/Header/Header";
 import Footer from "./Layout/Footer/Footer";
 import {HeaderMobile} from "./Layout/Header/HeaderMobile";
 
-export const HomeTemplate = (props) => { // path, exact, Component
+export default function HomeTemplate (props) { // path, exact, Component
     const [state,setState] = useState({
         width:window.innerWidth,
         height: window.innerHeight,

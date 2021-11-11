@@ -1,8 +1,8 @@
 import "./App.css";
-import { lazy } from 'react';
+// import { lazy } from 'react';
 import { Router, Switch } from "react-router";
 import { createBrowserHistory } from "history";
-import { HomeTemplate } from "./templates/HomeTemplate/HomeTemplate";
+import HomeTemplate from "./templates/HomeTemplate/HomeTemplate";
 import CheckoutTemplate from "./templates/CheckoutTemplate/CheckoutTemplate";
 import {UserTemplate} from "./templates/UserTemplate/UserTemplate";
 import AdminTemplate from "./templates/AdminTemplate/AdminTemplate";
@@ -28,7 +28,7 @@ import NotFound from "./pages/Errors/NotFound";
 
 
 
-const CheckoutTemplateLazy = lazy(()=> import ('./templates/CheckoutTemplate/CheckoutTemplate'))
+// const CheckoutTemplateLazy = lazy(()=> import ('./templates/CheckoutTemplate/CheckoutTemplate'))
 
 export const history = createBrowserHistory();
 
@@ -80,6 +80,7 @@ function App() {
     //   {/* <LayoutMenu /> */}
     //  </div>
 
+    
     <Router history={history}>
       <Loading />
       <Switch>
@@ -89,13 +90,11 @@ function App() {
         <HomeTemplate path="/application" exact Component={Application} />
 
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
-        {/* <Route path="/login" exact Component={Login} /> */}
+        
         <HomeTemplate path="/profile" exact Component={Profile} />
         
         <CheckoutTemplate path="/checkout/:id" exact Component={Checkout} />
-        {/* <Suspense fallback={<h1>LOADING...</h1>}>
-          <CheckoutTemplateLazy path="/checkout/:id" exact Component={Checkout} />
-        </Suspense> */}
+        
         <UserTemplate path="/login" exact Component={Login} />
         <UserTemplate path="/register" exact Component={Register} />
 
