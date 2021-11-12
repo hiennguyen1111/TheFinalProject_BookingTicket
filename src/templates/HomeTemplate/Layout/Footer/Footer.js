@@ -43,12 +43,12 @@ export default function Footer(props) {
               Holidays
             </p>
             <div>
-              <a href="#" class="hover:text-violet-600">
+              <a href="#" class="text-white hover:text-violet-600">
                 Hotline: 1900 6666
               </a>
             </div>
             <div>
-              <a href="#" class="hover:text-violet-600">
+              <a href="#" class="text-white hover:text-violet-600">
                 Email support: hoidap@cybermovie.vn
               </a>
             </div>
